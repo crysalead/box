@@ -1,10 +1,12 @@
 {
     "name": "crysalead/box",
     "description": "Minimalist Dependency Injection Container.",
-    "keywords": ["IoC", "Dependency Injection", "Inversion of Control"],
+    "keywords": ["IoC", "Dependency Injection", "Dependency Injection Container", "Inversion of Control"],
     "license": "MIT",
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.4"
+    },
+    "require-dev": {
         "crysalead/kahlan": "dev-master"
     },
     "autoload": {
