@@ -1,5 +1,5 @@
 <?php
-namespace box\spec;
+namespace box\spec\suite;
 
 use kahlan\plugin\Stub;
 

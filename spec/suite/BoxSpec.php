@@ -1,5 +1,5 @@
 <?php
-namespace box\spec;
+namespace box\spec\suite;
 
 use stdClass;
 use box\Box;
@@ -49,7 +49,7 @@ describe("Box", function() {
 
         it("passes all arguments to the constructor", function() {
 
-            $this->box->factory('spec.arguments', 'box\spec\MyTestClass');
+            $this->box->factory('spec.arguments', 'box\spec\suite\MyTestClass');
             $options = [
                 'options1' => 'value1',
                 'options2' => 'value2'
