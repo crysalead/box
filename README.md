@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/crysalead/box.png?branch=master)](https://travis-ci.org/crysalead/box) [![Code Coverage](https://scrutinizer-ci.com/g/crysalead/box/badges/coverage.png?s=3bea5fc1b02c06e020d5545f9c7da103c4f7ecf4)](https://scrutinizer-ci.com/g/crysalead/box/)
 
-Box is dependency injection container which manage dependencies based on closures definition only. This approch has the particularity to be simple, easy, flexible and powerful and doesn't need to rely on the `ReflectionClass` layer of PHP.
+Box is dependency injection container which manage dependencies based on closure definitions only. This approch has the particularity to be simple, easy and flexible. It also support lazy dependencies resolution using wrappers.
 
 ## API
 
@@ -33,8 +33,8 @@ Use `Box::factory()` to setup a factory. It can be a closure:
 ```php
 use MyClass;
 
-$box->factory('foo', function($options = []) {
-	return new MyClass($options);
+$box->factory('foo', function($param1, $param2) {
+	return new MyClass($param1, $param2);
 });
 ```
 
@@ -51,28 +51,28 @@ Box::factory('foo', 'otherNamespace\MyClass');
 To resolve a dependency, use `Box::get()`:
 
 ```php
-$box->get('foo', $params);
+$box->get('foo', $param1, $param2);
 ```
 
-The second parameter is the array of parameters passed to the closure or directly to the constructor if the definition is a fully-namespaced class name string.
+All `$paramX` are optional parameters passed to the closure or directly to the constructor if the definition is a fully-namespaced class name string.
 
 ### Returing a wrapped dependency
 
 Wrapping a dependency has the advantage to allow to inject a dependency without resolving it directly. To be able to lazily resolve a dependency you need to use `Box::wrap()`:
 
 ```php
-$box->wrap('foo', $params, 'box\Wrapper');
+$box->wrap('foo', $param1, $param2);
 ```
 
-The second parameter is the array of parameters passed to pass to the closure dependency definition. And the third parameter is the class name used for wrapping up the dependency.
+All `$paramX` are optional parameters passed to the closure or directly to the constructor if the definition is a fully-namespaced class name string.
 
 Then dependency is resolved by doing:
 
 ```php
-$dependency = $wrapper->get($params);
+$dependency = $wrapper->get($param1, $param2);
 ```
 
-The second parameter is the array of parameters passed to the closure or directly to the constructor if the definition is a fully-namespaced class name string (if set, it overrides the one setted at the wrapping step).
+All `$paramX` are optional and will overrides the ones setted at the wrapping step.
 
 ### Cleanup
 

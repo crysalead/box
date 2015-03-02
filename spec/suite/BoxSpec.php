@@ -7,10 +7,11 @@ use box\BoxException;
 
 class MyTestClass
 {
-    public $options = [];
+    public $params = [];
 
-    public function __construct($options = []) {
-        $this->options = $options;
+    public function __construct()
+    {
+        $this->params = func_get_args();
     }
 }
 
@@ -38,23 +39,23 @@ describe("Box", function() {
 
         it("passes all arguments to the Closure", function() {
 
-            $this->box->factory('spec.arguments', function($options) { return $options; });
-            $options = [
-                'options1' => 'value1',
-                'options2' => 'value2'
+            $this->box->factory('spec.arguments', function() { return func_get_args(); });
+            $params = [
+                'params1',
+                'params2'
             ];
-            expect($this->box->get('spec.arguments', [$options]))->toBe($options);
+            expect($this->box->get('spec.arguments', $params[0],  $params[1]))->toBe($params);
 
         });
 
         it("passes all arguments to the constructor", function() {
 
             $this->box->factory('spec.arguments', 'box\spec\suite\MyTestClass');
-            $options = [
-                'options1' => 'value1',
-                'options2' => 'value2'
+            $params = [
+                'params1',
+                'params2'
             ];
-            expect($this->box->get('spec.arguments', [$options])->options)->toBe($options);
+            expect($this->box->get('spec.arguments', $params[0],  $params[1])->params)->toBe($params);
 
         });
 

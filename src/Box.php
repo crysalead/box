@@ -2,9 +2,16 @@
 namespace box;
 
 use Closure;
+use ReflectionClass;
 
 class Box
 {
+    /**
+     * Class dependencies.
+     *
+     * @var array
+     */
+    protected $_classes = [];
 
     /**
      * The defined dependency definitions
@@ -12,6 +19,20 @@ class Box
      * @var array
      */
     protected $_definitions = [];
+
+    /**
+     * The Constructor.
+     *
+     * @param array $config The instance configuration. Possible values:
+     *                      - `'wrapper'` _string_: the the wrapper class name to use.
+     */
+    public function __construct($config = []) {
+        $defaults = [
+            'wrapper' => 'box\Wrapper'
+        ];
+        $config += $defaults;
+        $this->_classes['wrapper'] = $defaults['wrapper'];
+    }
 
     /**
      * Defining a factory.
@@ -69,10 +90,11 @@ class Box
      * Gets a shared variable or an new instance.
      *
      * @param  string $name The name of the definition.
+     * @param  mixed  ...   Parameter.
      * @return mixed        The shared variable or an new instance.
      * @throws BoxException if the definition doesn't exists.
      */
-    public function get($name, $params = [])
+    public function get($name)
     {
         if (!isset($this->_definitions[$name])) {
             throw new BoxException("Unexisting `{$name}` definition dependency.");
@@ -84,8 +106,11 @@ class Box
             return $definition;
         }
 
+        $params = func_get_args();
+        array_shift($params);
+
         if ($type === 'service') {
-            return $definition = $this->_service($name, $definition);
+            return $definition = $this->_service($name, $definition, $params);
         }
         return $definition = $this->_factory($definition, $params);
     }
@@ -94,10 +119,11 @@ class Box
      * Returns a dependency container.
      *
      * @param  string $name The name of the definition.
+     * @param  mixed  ...   A list of parameters.
      * @return mixed        The shared variable or an new instance.
      * @throws BoxException if the definition doesn't exists.
      */
-    public function wrap($name, $params = [], $wrapper = 'box\Wrapper')
+    public function wrap($name)
     {
         if (!isset($this->_definitions[$name])) {
             throw new BoxException("Unexisting `{$name}` definition dependency.");
@@ -105,6 +131,11 @@ class Box
         if (!$this->_definitions[$name]['definition'] instanceof Closure) {
             throw new BoxException("Error `{$name}` is not a closure definition dependency can't be wrapped.");
         }
+
+        $params = func_get_args();
+        array_shift($params);
+
+        $wrapper = $this->_classes['wrapper'];
         return new $wrapper([
             'box'    => $this,
             'name'   => $name,
@@ -117,13 +148,14 @@ class Box
      *
      * @param  string $name       The name of the definition.
      * @param  mixed  $definition A definition.
+     * @param  array  $params     Parameters to pass to the definition.
      * @return mixed
      */
-    protected function _service($name, $definition)
+    protected function _service($name, $definition, $params)
     {
         if ($definition instanceof Closure) {
             $type = 'singleton';
-            $definition = $definition();
+            $definition = call_user_func_array($definition, $params);
             $this->_definitions[$name] = compact('definition', 'type');
         }
         return $definition;
@@ -139,7 +171,12 @@ class Box
     protected function _factory($definition, $params)
     {
         if (is_string($definition)) {
-            return new $definition(isset($params[0]) ? $params[0] : [], $this);
+            if ($params) {
+                $refl = new ReflectionClass($definition);
+                return $refl->newInstanceArgs($params);
+            } else {
+                return new $definition();
+            }
         }
         return call_user_func_array($definition, $params);
     }

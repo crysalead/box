@@ -69,16 +69,18 @@ class Wrapper
      * Resolve the dependency.
      *
      * @return mixed        The shared variable or an new instance.
+     * @param  mixed  ...   A list of parameters.
      * @throws BoxException
      */
-    public function get($params = [])
+    public function get()
     {
         if ($this->__resolved) {
             return $this->__dependency;
         }
         $this->__resolved = true;
-        $params = func_num_args() === 0 ? $this->__params : $params;
-        return $this->__dependency = $this->__box->get($this->__name, $params);
+        $params = func_num_args() === 0 ? $this->__params : func_get_args();
+        array_unshift($params, $this->__name);
+        return $this->__dependency = call_user_func_array([$this->__box, 'get'], $params);
     }
 
 }

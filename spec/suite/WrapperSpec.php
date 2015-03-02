@@ -63,37 +63,37 @@ describe("Wrapper", function() {
 
         it("passes parameters to the Closure", function() {
 
-            $this->box->factory('spec.arguments', function($options) { return $options; });
-            $options = [
-                'options1' => 'value1',
-                'options2' => 'value2'
+            $this->box->factory('spec.arguments', function() { return func_get_args(); });
+            $params = [
+                'param1',
+                'param2'
             ];
             $wrapper = new Wrapper([
                 'box'    => $this->box,
                 'name'   => 'spec.arguments',
-                'params' => [$options]
+                'params' => $params
             ]);
-            expect($wrapper->get())->toBe($options);
+            expect($wrapper->get())->toBe($params);
 
         });
 
         it("override passed parameters to the Closure", function() {
 
-            $this->box->factory('spec.arguments', function($options) { return $options; });
-            $options = [
-                'options1' => 'value1',
-                'options2' => 'value2'
+            $this->box->factory('spec.arguments', function() { return func_get_args(); });
+            $params = [
+                'param1',
+                'param2'
             ];
             $wrapper = new Wrapper([
                 'box'    => $this->box,
                 'name'   => 'spec.arguments',
-                'params' => [$options]
+                'params' => $params
             ]);
             $overrided = [
-                'options3' => 'value3',
-                'options4' => 'value4'
+                'param3',
+                'param4'
             ];
-            expect($wrapper->get([$overrided]))->toBe($overrided);
+            expect($wrapper->get('param3', 'param4'))->toBe($overrided);
 
         });
 
