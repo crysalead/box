@@ -11,10 +11,14 @@
     },
     "autoload": {
         "psr-4": {
-			"box\\": "src/",
-			"box\\spec\\": "spec/"
+			"box\\": "src/"
 		},
         "files": ["src/init.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "box\\spec\\": "spec/"
+        }
     },
     "config": {
         "bin-dir": "bin"
