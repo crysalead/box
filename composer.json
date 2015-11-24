@@ -11,8 +11,8 @@
     },
     "autoload": {
         "psr-4": {
-			"box\\": "src/"
-		},
+            "box\\": "src/"
+        },
         "files": ["src/init.php"]
     },
     "autoload-dev": {
