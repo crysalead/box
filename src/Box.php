@@ -1,5 +1,5 @@
 <?php
-namespace box;
+namespace Lead\Box;
 
 use Closure;
 use ReflectionClass;
@@ -28,7 +28,7 @@ class Box
      */
     public function __construct($config = []) {
         $defaults = [
-            'wrapper' => 'box\Wrapper'
+            'wrapper' => 'Lead\Box\Wrapper'
         ];
         $config += $defaults;
         $this->_classes['wrapper'] = $defaults['wrapper'];

@@ -1,9 +1,9 @@
 <?php
-namespace box\spec\suite;
+namespace Lead\Box\Spec\Suite;
 
 use stdClass;
-use box\Box;
-use box\BoxException;
+use Lead\Box\Box;
+use Lead\Box\BoxException;
 
 class MyTestClass
 {
@@ -50,7 +50,7 @@ describe("Box", function() {
 
         it("passes all arguments to the constructor", function() {
 
-            $this->box->factory('spec.arguments', 'box\spec\suite\MyTestClass');
+            $this->box->factory('spec.arguments', 'Lead\Box\Spec\Suite\MyTestClass');
             $params = [
                 'params1',
                 'params2'
@@ -191,7 +191,7 @@ describe("Box", function() {
 
             $this->box->factory('spec.stdClass', function() { return new stdClass; });
             $wrapper = $this->box->wrap('spec.stdClass');
-            expect($wrapper)->toBeAnInstanceOf('box\Wrapper');
+            expect($wrapper)->toBeAnInstanceOf('Lead\Box\Wrapper');
 
             $dependency = $wrapper->get();
             expect($dependency)->toBeAnInstanceOf("stdClass");
@@ -305,7 +305,7 @@ describe("box()", function() {
         $closure = function() {
             box('box.spec');
         };
-        expect($closure)->toThrow(new BoxException("Unexisting box `'box.spec'`."));
+        expect($closure)->toThrow("Unexisting box `'box.spec'`.");
     });
 
     it("removes all boxes", function() {
@@ -318,19 +318,19 @@ describe("box()", function() {
         $closure = function() {
             box('box.spec1');
         };
-        expect($closure)->toThrow(new BoxException("Unexisting box `'box.spec1'`."));
+        expect($closure)->toThrow("Unexisting box `'box.spec1'`.");
 
         $closure = function() {
             box('box.spec2');
         };
-        expect($closure)->toThrow(new BoxException("Unexisting box `'box.spec2'`."));
+        expect($closure)->toThrow("Unexisting box `'box.spec2'`.");
     });
 
     it("throws an exception when trying to get an unexisting box", function() {
         $closure = function() {
             box('box.spec');
         };
-        expect($closure)->toThrow(new BoxException("Unexisting box `'box.spec'`."));
+        expect($closure)->toThrow("Unexisting box `'box.spec'`.");
     });
 
 });

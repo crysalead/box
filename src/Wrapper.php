@@ -1,5 +1,5 @@
 <?php
-namespace box;
+namespace Lead\Box;
 
 class Wrapper
 {

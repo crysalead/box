@@ -1,12 +1,12 @@
 <?php
-namespace box\spec\suite;
+namespace Lead\Box\Spec\Suite;
 
-use kahlan\plugin\Stub;
+use Kahlan\Plugin\Stub;
 
 use stdClass;
-use box\Box;
-use box\Wrapper;
-use box\BoxException;
+use Lead\Box\Box;
+use Lead\Box\Wrapper;
+use Lead\Box\BoxException;
 
 describe("Wrapper", function() {
 
