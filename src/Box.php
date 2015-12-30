@@ -47,7 +47,7 @@ class Box
         if (!is_string($definition) && !$definition instanceof Closure) {
             throw new BoxException("Error `{$name}` is not a closure definition dependency can't use it as a factory definition.");
         }
-        $this->_set($name, $definition, 'factory');
+        return $this->_set($name, $definition, 'factory');
     }
 
     /**
@@ -55,10 +55,11 @@ class Box
      *
      * @param  string $id         The name of the definition.
      * @param  mixed  $definition The variable to share.
+     * @return self
      */
     public function service($name, $definition)
     {
-        $this->_set($name, $definition, 'service');
+        return $this->_set($name, $definition, 'service');
     }
 
     /**
@@ -67,6 +68,7 @@ class Box
      * @param  string $id         The name of the definition.
      * @param  mixed  $definition The definition.
      * @param  mixed  $type       The type of the definition.
+     * @return self
      */
     protected function _set($name, $definition, $type)
     {
@@ -74,6 +76,7 @@ class Box
             $definition = $definition->bindTo($this, get_class($this));
         }
         $this->_definitions[$name] = compact('definition', 'type');
+        return $this;
     }
 
     /**

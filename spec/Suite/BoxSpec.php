@@ -69,6 +69,12 @@ describe("Box", function() {
 
         });
 
+        it("returns itself", function() {
+
+            expect($this->box->factory('spec.stdClass', "stdClass"))->toBe($this->box);
+
+        });
+
         it("throws an exception if the definition is not a string or a Closure", function() {
 
             $expected = new BoxException("Error `spec.instance` is not a closure definition dependency can't use it as a factory definition.");
@@ -139,6 +145,12 @@ describe("Box", function() {
             expect($closure1)->toBe($closure2);
             expect($closure1)->toBeAnInstanceOf("Closure");
             expect($closure1())->toBe("Hello World!");
+
+        });
+
+        it("returns itself", function() {
+
+            expect($this->box->service('spec.stdClass', "stdClass"))->toBe($this->box);
 
         });
 
