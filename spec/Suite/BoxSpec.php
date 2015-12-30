@@ -193,6 +193,22 @@ describe("Box", function() {
         });
     });
 
+
+    describe("->__get()/->__set()", function() {
+
+        beforeEach(function() {
+            $this->box = new Box();
+        });
+
+        it("gets/sets a service", function() {
+
+            $this->box->stdClass = 'stdClass';
+            expect($this->box->stdClass)->toBe('stdClass');
+
+        });
+
+    });
+
     describe("->wrap()", function() {
 
         beforeEach(function() {

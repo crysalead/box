@@ -36,10 +36,34 @@ class Box
     }
 
     /**
+     * Alias for `get()`.
+     *
+     * @param  string $name The name of the definition.
+     * @return mixed        The shared variable
+     */
+    public function __get($name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * Alias for `service()`.
+     *
+     * @param  string $name       The name of the definition.
+     * @param  mixed  $definition The variable to share.
+     * @return self
+     */
+    public function __set($name, $definition)
+    {
+        return $this->service($name, $definition);
+    }
+
+    /**
      * Defining a factory.
      *
      * @param  string          $id         The name of the definition.
      * @param  string|Closure  $definition A fully namespaced classname or a closure.
+     * @return self
      * @throws BoxException if the definition is not a closure or a string.
      */
     public function factory($name, $definition)
