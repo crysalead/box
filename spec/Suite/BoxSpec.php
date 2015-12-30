@@ -17,11 +17,11 @@ class MyTestClass
 
 describe("Box", function() {
 
-    describe("->factory()", function() {
+    beforeEach(function() {
+        $this->box = new Box();
+    });
 
-        beforeEach(function() {
-            $this->box = new Box();
-        });
+    describe("->factory()", function() {
 
         it("binds a closure", function() {
 
@@ -95,10 +95,6 @@ describe("Box", function() {
 
     describe("->service()", function() {
 
-        beforeEach(function() {
-            $this->box = new Box();
-        });
-
         it("shares a string", function() {
 
             $this->box->service('spec.stdClass', "stdClass");
@@ -158,10 +154,6 @@ describe("Box", function() {
 
     describe("has", function() {
 
-        beforeEach(function() {
-            $this->box = new Box();
-        });
-
         it("returns `false` if the Box is empty", function() {
             expect($this->box->has('spec.hello'))->toBe(false);
         });
@@ -179,10 +171,6 @@ describe("Box", function() {
 
     describe("->get()", function() {
 
-        beforeEach(function() {
-            $this->box = new Box();
-        });
-
         it("throws an exception if the dependency doesn't exists", function() {
 
             $closure = function(){
@@ -196,10 +184,6 @@ describe("Box", function() {
 
     describe("->__get()/->__set()", function() {
 
-        beforeEach(function() {
-            $this->box = new Box();
-        });
-
         it("gets/sets a service", function() {
 
             $this->box->stdClass = 'stdClass';
@@ -210,10 +194,6 @@ describe("Box", function() {
     });
 
     describe("->wrap()", function() {
-
-        beforeEach(function() {
-            $this->box = new Box();
-        });
 
         it("returns a dependency container", function() {
 
@@ -252,10 +232,6 @@ describe("Box", function() {
 
     describe("->remove()", function() {
 
-        beforeEach(function() {
-            $this->box = new Box();
-        });
-
         it("remove a bind", function() {
 
             $this->box->factory('spec.stdClass', function() { return new stdClass; });
@@ -269,10 +245,6 @@ describe("Box", function() {
     });
 
     describe("->clear()", function() {
-
-        beforeEach(function() {
-            $this->box = new Box();
-        });
 
         it("clears all binds & shares", function() {
 
