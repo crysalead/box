@@ -1,5 +1,6 @@
 <?php
-use box\BoxException;
+use Lead\Box\BoxException;
+use Lead\Box\Box;
 
 $defineFuctions = true;
 
@@ -14,23 +15,33 @@ if (defined('BOX_FUNCTIONS_EXIST') && BOX_FUNCTIONS_EXIST) {
 if ($defineFuctions) {
     define('BOX_FUNCTIONS_EXIST', true);
 
-    function box($name, $box = null) {
+    function box($name = '', $box = null) {
         static $boxes = [];
-        if ($name === false) {
-            $boxes = [];
-            return;
+
+        if (func_num_args() === 1) {
+            if ($name === false) {
+                $boxes = [];
+                return;
+            }
+            if (is_object($name)) {
+                return $boxes[''] = $name;
+            }
+            if (isset($boxes[$name])) {
+                return $boxes[$name];
+            }
+            throw new BoxException("Unexisting box `'{$name}'`.");
         }
-        if ($box === false) {
-            unset($boxes[$name]);
-            return;
-        }
-        if ($box) {
+        if (func_num_args() === 2) {
+            if ($box === false) {
+                unset($boxes[$name]);
+                return;
+            }
             return $boxes[$name] = $box;
         }
-        if (isset($boxes[$name])) {
-            return $boxes[$name];
+        if (!isset($boxes[''])) {
+            $boxes[''] = new Box();
         }
-        throw new BoxException("Unexisting box `'{$name}'`.");
+        return $boxes[''];
     }
 
 }
